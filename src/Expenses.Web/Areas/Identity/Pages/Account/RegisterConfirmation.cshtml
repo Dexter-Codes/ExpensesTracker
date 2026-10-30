@@ -1,0 +1,6 @@
+@page
+@model Expenses.Web.Areas.Identity.Pages.Account.RegisterConfirmationModel
+@{ ViewData["Title"] = "Check your email"; }
+<section class="auth-panel account-panel"><span class="eyebrow">ONE MORE STEP</span><h1>Check your inbox.</h1>
+<p>Open the confirmation email and confirm your address. Then sign in below to continue to your invitation or dashboard.</p>
+<a class="button" asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Sign in after confirming</a></section>

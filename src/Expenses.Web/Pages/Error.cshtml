@@ -1,0 +1,4 @@
+@page
+@model ErrorModel
+@{ ViewData["Title"] = "Something went wrong"; }
+<section class="auth-panel"><h1>We couldn’t finish that.</h1><p>Please return to your groups and try again. If this keeps happening, share the request reference with the app owner.</p><p>Reference: @Model.RequestId</p><a class="button" asp-page="/Index">Back to your groups</a></section>

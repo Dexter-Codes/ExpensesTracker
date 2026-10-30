@@ -1,0 +1,21 @@
+@page
+@model Expenses.Web.Pages.ApiTokenModel
+@{ ViewData["Title"] = "API token"; }
+
+<section class="container py-5">
+    <h1>API token</h1>
+    <p>Create a token to use your expense account from an API client. It expires after 15 minutes.</p>
+    <p>Keep it private. Signing out does not revoke it; changing your password invalidates existing tokens.</p>
+    <form method="post">
+        <button class="btn btn-primary" type="submit">Create token</button>
+    </form>
+    @if (Model.Token is { } token)
+    {
+        <div class="mt-4">
+            <label for="access-token">Your token</label>
+            <textarea id="access-token" class="form-control" rows="7" readonly spellcheck="false" autocomplete="off">@token.AccessToken</textarea>
+            <p>Expires @token.ExpiresAt.ToString("yyyy-MM-dd HH:mm:ss") UTC.</p>
+            <p>Use it in the <code>Authorization: Bearer &lt;token&gt;</code> request header.</p>
+        </div>
+    }
+</section>

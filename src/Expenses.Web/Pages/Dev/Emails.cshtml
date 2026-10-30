@@ -1,0 +1,9 @@
+@page
+@model Expenses.Web.Pages.Dev.EmailsModel
+@{ ViewData["Title"] = "Development inbox"; }
+<section class="auth-panel"><h1>Development inbox</h1><p>Local email previews. Available only in Development, from this computer.</p>
+@foreach (var email in Model.Emails)
+{
+    <article class="card email-preview"><strong>@email.Subject</strong><p>To: @email.Recipient · @email.CreatedAt.ToString("u")</p><div>@Html.Raw(email.Body)</div></article>
+}
+</section>

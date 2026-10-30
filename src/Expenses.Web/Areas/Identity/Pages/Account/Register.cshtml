@@ -1,0 +1,12 @@
+@page
+@model Expenses.Web.Areas.Identity.Pages.Account.RegisterModel
+@{ ViewData["Title"] = "Create an account"; }
+<section class="auth-panel account-panel"><span class="eyebrow">MAKE ROOM FOR GOOD COMPANY</span><h1>Start sharing. Stay even.</h1><p class="muted">Create your account. We’ll send a link to confirm your email address.</p>
+<form method="post" data-account-form><input type="hidden" asp-for="ReturnUrl" /><p data-account-error class="text-danger" role="alert" hidden></p><div asp-validation-summary="All" class="text-danger" role="alert"></div><label asp-for="Email">Email address<input asp-for="Email" autocomplete="email" /></label><label asp-for="Password">Password<input asp-for="Password" autocomplete="new-password" /></label><p class="muted">Use at least 6 characters, with uppercase, lowercase, a number, and a symbol.</p><label asp-for="ConfirmPassword">Confirm password<input asp-for="ConfirmPassword" autocomplete="new-password" /></label><button type="submit">Create account</button></form>
+@if (Model.Providers.Count > 0)
+{
+    <div class="external-signin"><p class="muted">Or continue with</p><form asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="actions">@foreach (var provider in Model.Providers) { <button class="secondary" name="provider" value="@provider.Name">@provider.DisplayName</button> }</form></div>
+}
+<p class="account-help">Already have an account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Sign in</a></p></section>
+
+@section Scripts { <script src="~/js/account.js" asp-append-version="true"></script> }

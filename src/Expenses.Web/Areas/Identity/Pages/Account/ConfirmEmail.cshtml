@@ -1,0 +1,16 @@
+@page
+@model Expenses.Web.Areas.Identity.Pages.Account.ConfirmEmailModel
+@{ ViewData["Title"] = "Confirm email"; }
+<section class="auth-panel account-panel">
+@if (Model.Confirmed)
+{
+    <span class="eyebrow">YOU’RE READY</span><h1>Email confirmed.</h1>
+    <p>Sign in to continue. If you were invited to a group, you’ll return to its invitation.</p>
+    <a class="button" asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Sign in and continue</a>
+}
+else
+{
+    <h1>This link couldn’t be confirmed.</h1><p>It may be invalid or expired. Request a new confirmation email and use its newest link.</p>
+    <a class="button" asp-page="./ResendEmailConfirmation">Resend confirmation</a>
+}
+</section>

@@ -1,0 +1,6 @@
+@page
+@model Expenses.Web.Pages.InvitationsModel
+@{ ViewData["Title"] = "Join a group"; }
+<section class="auth-panel"><span class="eyebrow">YOU’RE INVITED</span><h1>Join the group.</h1><p>Accept this invitation using the verified email address it was sent to.</p>
+@if (Model.Error is not null) { <p class="text-danger" role="alert">@Model.Error</p> }
+<form method="post"><input type="hidden" asp-for="Token" /><button type="submit">Accept invitation</button></form></section>

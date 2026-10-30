@@ -1,0 +1,12 @@
+@page
+@model Expenses.Web.Areas.Identity.Pages.Account.LoginModel
+@{ ViewData["Title"] = "Sign in"; }
+<section class="auth-panel account-panel"><span class="eyebrow">WELCOME BACK</span><h1>Pick up where you left off.</h1><p class="muted">Sign in to see your groups and shared expenses.</p>
+<form method="post" data-account-form><input type="hidden" asp-for="ReturnUrl" /><p data-account-error class="text-danger" role="alert" hidden></p><div asp-validation-summary="All" class="text-danger" role="alert"></div><label asp-for="Email">Email address<input asp-for="Email" autocomplete="email" /></label><label asp-for="Password">Password<input asp-for="Password" autocomplete="current-password" /></label><label class="participant"><input asp-for="RememberMe" /> Keep me signed in</label><button type="submit">Sign in</button></form>
+@if (Model.Providers.Count > 0)
+{
+    <div class="external-signin"><p class="muted">Or continue with</p><form asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="actions">@foreach (var provider in Model.Providers) { <button class="secondary" name="provider" value="@provider.Name">@provider.DisplayName</button> }</form></div>
+}
+<p class="account-help"><a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Create an account</a> · <a asp-page="./ForgotPassword">Forgot password?</a> · <a asp-page="./ResendEmailConfirmation">Resend confirmation</a></p></section>
+
+@section Scripts { <script src="~/js/account.js" asp-append-version="true"></script> }

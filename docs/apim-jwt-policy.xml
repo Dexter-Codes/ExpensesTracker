@@ -1,0 +1,33 @@
+<policies>
+    <inbound>
+        <base />
+        <validate-jwt header-name="Authorization" require-scheme="Bearer"
+                      require-expiration-time="true" require-signed-tokens="true"
+                      clock-skew="30" failed-validation-httpcode="401"
+                      failed-validation-error-message="A valid expense API token is required.">
+            <issuer-signing-keys>
+                <key>{{expenses-api-signing-key}}</key>
+            </issuer-signing-keys>
+            <audiences>
+                <audience>expenses-api</audience>
+            </audiences>
+            <issuers>
+                <issuer>expenses</issuer>
+            </issuers>
+            <required-claims>
+                <claim name="scope" match="all">
+                    <value>expenses</value>
+                </claim>
+            </required-claims>
+        </validate-jwt>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

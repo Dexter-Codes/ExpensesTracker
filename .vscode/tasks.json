@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "publish functions",
+            "type": "process",
+            "command": "dotnet",
+            "args": [
+                "publish",
+                "${workspaceFolder}/src/Expenses.Functions/Expenses.Functions.csproj",
+                "-c",
+                "Release",
+                "-o",
+                "${workspaceFolder}/artifacts/functions"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

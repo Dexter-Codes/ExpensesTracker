@@ -1,0 +1,10 @@
+**/bin
+**/obj
+.packages
+.git
+**/*.db*
+**/local.settings.json
+**/appsettings.Local.json
+.env*
+infra
+artifacts

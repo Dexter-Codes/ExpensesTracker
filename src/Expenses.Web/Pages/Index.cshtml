@@ -1,0 +1,34 @@
+@page
+@model IndexModel
+@{ ViewData["Title"] = "Shared expenses"; }
+@if (User.Identity?.IsAuthenticated != true)
+{
+    <section class="welcome">
+        <span class="eyebrow">A LITTLE LESS MATH. A LITTLE MORE LIFE.</span>
+        <h1>Good company.<br /><span>Clear balances.</span></h1>
+        <p>Split dinner, share the rent, or keep a trip in balance. All your group expenses, in one quiet place.</p>
+        <div class="actions"><a class="button" asp-area="Identity" asp-page="/Account/Register">Create an account ↗</a><a class="button secondary" asp-area="Identity" asp-page="/Account/Login">Sign in</a></div>
+        <div class="welcome-notes"><span>01 &nbsp; Create your group</span><span>02 &nbsp; Share an expense</span><span>03 &nbsp; Settle up</span></div>
+    </section>
+}
+else
+{
+    <div id="app" class="workspace">
+        <aside class="sidebar"><div class="section-heading"><span>YOUR GROUPS</span><button class="icon-button" id="new-group" aria-label="Create group">+</button></div><nav id="groups" aria-label="Expense groups"></nav><p class="sidebar-note">Shared moments.<br />Sorted expenses.</p></aside>
+        <section class="group-content">
+            <div id="notice" class="notice" role="status" hidden></div>
+            <div id="empty" class="empty"><span class="eyebrow">START SOMETHING SHARED</span><h1>Every group has a story.</h1><p>Create one for your home, your next trip, or your regular dinner crew.</p><button id="first-group">Create your first group</button></div>
+            <div id="group" hidden>
+                <header class="group-heading"><div><span class="eyebrow">THE GROUP LEDGER · INR</span><h1 id="group-name"></h1><p id="member-count"></p></div><div class="actions"><button class="secondary" id="invite">Invite a friend</button><button id="add-expense">+ Add expense</button></div></header>
+                <div class="stats"><article><span>You are owed</span><strong id="owed">₹0.00</strong></article><article><span>You owe</span><strong id="owing">₹0.00</strong></article><article><span>Group spending</span><strong id="total">₹0.00</strong></article></div>
+                <div class="ledger-grid"><section><div class="section-heading"><h2>Expenses</h2><button class="text-button" id="refresh">Refresh ↻</button></div><div id="expenses" class="card"></div><h2 class="history-heading">Payment history</h2><div id="settlements" class="card"></div></section>
+                <aside><h2>Settle up</h2><p class="muted">Suggested payments to clear group balances.</p><div id="debts" class="card"></div><h2 class="history-heading">People</h2><div id="members" class="card"></div></aside></div>
+            </div>
+        </section>
+    </div>
+    <dialog id="group-dialog"><form id="group-form"><div class="dialog-heading"><h2>Create a group</h2><button type="button" class="close" data-close aria-label="Close">×</button></div><label>Group name<input name="name" maxlength="80" placeholder="e.g. Goa weekend" required /></label><p class="form-error" role="alert"></p><button type="submit">Create group</button></form></dialog>
+    <dialog id="invite-dialog"><form id="invite-form"><div class="dialog-heading"><h2>Invite a friend</h2><button type="button" class="close" data-close aria-label="Close">×</button></div><p>They’ll receive a link to join this group. They must sign in with this email address.</p><label>Email address<input name="email" type="email" maxlength="254" required /></label><p class="form-error" role="alert"></p><button type="submit">Send invitation</button></form></dialog>
+    <dialog id="expense-dialog"><form id="expense-form"><div class="dialog-heading"><h2 id="expense-title">Add an expense</h2><button type="button" class="close" data-close aria-label="Close">×</button></div><label>Description<input name="description" maxlength="160" placeholder="What was it for?" required /></label><div class="form-row"><label>Amount · INR<input name="amount" type="text" inputmode="decimal" placeholder="0.00" required /></label><label>Date<input name="date" type="date" required /></label></div><label>Paid by<select name="paidById"></select></label><label>Split method<select name="split"><option value="equal">Equally</option><option value="custom">Custom amounts</option></select></label><fieldset><legend>Split between</legend><div id="participants"></div></fieldset><p class="muted">Equal splits distribute any remaining paise consistently. Custom amounts must add up to the total.</p><p class="form-error" role="alert"></p><button type="submit">Save expense</button></form></dialog>
+    <dialog id="settlement-dialog"><form id="settlement-form"><div class="dialog-heading"><h2>Record a payment</h2><button type="button" class="close" data-close aria-label="Close">×</button></div><p id="payment-to"></p><label>Amount paid · INR<input name="amount" type="text" inputmode="decimal" required /></label><p class="muted">Record money you have already paid outside the app.</p><p class="form-error" role="alert"></p><button type="submit">Record payment</button></form></dialog>
+    @section Scripts { <script src="~/js/app.js" asp-append-version="true"></script> }
+}

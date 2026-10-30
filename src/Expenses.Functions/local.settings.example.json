@@ -1,0 +1,11 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "EmailQueue": "UseDevelopmentStorage=true",
+    "Email__DryRun": "true",
+    "Email__Endpoint": "",
+    "Email__Sender": ""
+  }
+}

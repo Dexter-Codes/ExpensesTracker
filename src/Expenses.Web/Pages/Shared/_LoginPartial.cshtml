@@ -1,0 +1,18 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject Expenses.Web.Services.ApiTokenService ApiTokens
+<ul class="account-links">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li><a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage account">@User.Identity?.Name</a></li>
+    @if (ApiTokens.Enabled)
+    {
+        <li><a asp-area="" asp-page="/ApiToken">API token</a></li>
+    }
+    <li><form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/"><button type="submit" class="text-button">Sign out</button></form></li>
+}
+else
+{
+    <li><a asp-area="Identity" asp-page="/Account/Login">Sign in</a></li><li><a asp-area="Identity" asp-page="/Account/Register">Get started ↗</a></li>
+}
+</ul>
