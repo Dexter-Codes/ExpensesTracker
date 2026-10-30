@@ -19,13 +19,17 @@ Under the identity's **Federated credentials**, add the GitHub Actions scenario:
 | Field | Value |
 |---|---|
 | Organization / owner | `Dexter-Codes` |
+| Organization / owner ID | `61990213` |
 | Repository | `ExpensesTracker` |
+| Repository ID | `1439727207` |
 | Entity type | `Environment` |
 | Environment | `azure` |
 | Credential name | `github-expenses-azure` |
 | Issuer | `https://token.actions.githubusercontent.com` |
-| Subject | `repo:Dexter-Codes/ExpensesTracker:environment:azure` |
+| Subject | `repo:Dexter-Codes@61990213/ExpensesTracker@1439727207:environment:azure` |
 | Audience | `api://AzureADTokenExchange` |
+
+These numeric IDs were checked against the GitHub repository API. New GitHub.com repositories created after July 15, 2026 use immutable OIDC subjects containing owner and repository IDs. Use the full generated subject, not the older name-only format. Recheck IDs if using a different repository.
 
 Assign **Website Contributor** to this identity separately on the existing **ExpensesTracker App Service** and **expensestracker-email-idgaf Function App**. Do not assign subscription-wide Contributor. The workflow uses `azure/login` with OIDC; no client secret or publish profile is required.
 

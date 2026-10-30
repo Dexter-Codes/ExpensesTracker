@@ -134,7 +134,7 @@ Build the web project with `dotnet publish src/Expenses.Web -c Release -o artifa
 To use the supplied GitHub Actions files, create a GitHub repository yourself and push the source. The CI workflow builds, tests and packages both projects; it does not deploy. Before running the deploy workflow:
 
 1. Create a GitHub environment named `azure` and configure any desired approval rule.
-2. Configure Microsoft Entra workload federation for your repository and that environment (`repo:OWNER/REPO:environment:azure`). Grant the deployment identity permissions on the two target apps; do not grant subscription-wide access.
+2. Configure Microsoft Entra workload federation for your repository and that environment. New GitHub.com repositories use an immutable subject including numeric IDs (`repo:OWNER@OWNER-ID/REPO@REPO-ID:environment:azure`); match the format emitted by your repository. See the verified lab values in [CICD.md](CICD.md). Grant the deployment identity permissions on the two target apps; do not grant subscription-wide access.
 3. Add environment variables `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`, `AZURE_WEB_APP_NAME`, and `AZURE_FUNCTION_APP_NAME`.
 4. Run **Deploy manually to Azure** and choose `web` or `functions`. The workflow tests before deploying and does not initialize the database.
 5. Change a visible label, repeat deployment, verify it, then practise redeploying an earlier commit. B1 has no deployment slots; use a suitable higher plan if you want a slot-swap exercise.

@@ -8,3 +8,13 @@
 .env*
 infra
 artifacts
+.vscode
+.github
+tests
+docs
+TestResults
+**/*.pfx
+**/*.p12
+**/*.pem
+**/*.key
+**/*.publishsettings

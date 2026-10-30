@@ -43,6 +43,7 @@ Follow [the guided Azure lab](docs/AZURE.md). You configure Azure resources your
 - [Business rules and implementation choices](docs/DECISIONS.md)
 - [API and API Management exercises](docs/API.md)
 - [GitHub CI/CD setup](docs/CICD.md)
+- [Docker build and local run](docs/DOCKER.md)
 - [Terraform and Kubernetes starters](infra/README.md)
 
 Keep the first deployment small. App Service and AKS are alternative hosts for the same application; run both together only when you deliberately want to compare them. Azure Functions handles asynchronous emails in either case.

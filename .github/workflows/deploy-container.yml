@@ -1,0 +1,68 @@
+name: Deploy container to Azure
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: azure
+    timeout-minutes: 30
+    concurrency:
+      group: azure-deploy
+      cancel-in-progress: false
+    env:
+      AZURE_ACR_NAME: ${{ vars.AZURE_ACR_NAME }}
+      AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+      AZURE_CONTAINER_WEB_APP_NAME: ${{ vars.AZURE_CONTAINER_WEB_APP_NAME }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+      - name: Test before deployment
+        run: dotnet test tests/Expenses.Tests/Expenses.Tests.csproj -c Release
+      - uses: azure/login@v3
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - name: Authenticate to registry and select image tag
+        id: image
+        shell: bash
+        run: |
+          set -euo pipefail
+          : "${AZURE_ACR_NAME:?Set AZURE_ACR_NAME in the azure environment}"
+          : "${AZURE_RESOURCE_GROUP:?Set AZURE_RESOURCE_GROUP in the azure environment}"
+          : "${AZURE_CONTAINER_WEB_APP_NAME:?Set AZURE_CONTAINER_WEB_APP_NAME in the azure environment}"
+          registry=$(az acr show --name "$AZURE_ACR_NAME" --resource-group "$AZURE_RESOURCE_GROUP" --query loginServer --output tsv)
+          test -n "$registry" && test "$registry" != "None"
+          az acr login --name "$AZURE_ACR_NAME"
+          echo "name=$registry/expenses-web:$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+      - name: Build and push image
+        shell: bash
+        env:
+          IMAGE: ${{ steps.image.outputs.name }}
+        run: |
+          set -euo pipefail
+          docker build --platform linux/amd64 --label "org.opencontainers.image.revision=$GITHUB_SHA" -t "$IMAGE" .
+          docker push "$IMAGE"
+      - name: Update the main container
+        shell: bash
+        env:
+          IMAGE: ${{ steps.image.outputs.name }}
+        run: |
+          set -euo pipefail
+          az webapp sitecontainers update \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --name "$AZURE_CONTAINER_WEB_APP_NAME" \
+            --container-name main \
+            --image "$IMAGE" \
+            --target-port 8080 \
+            --output none
+          az webapp restart --resource-group "$AZURE_RESOURCE_GROUP" --name "$AZURE_CONTAINER_WEB_APP_NAME"
+          printf 'Configured container image: `%s`\n\nVerify the app after startup.\n' "$IMAGE" >> "$GITHUB_STEP_SUMMARY"
