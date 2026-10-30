@@ -75,6 +75,8 @@ For this lab, the user has now verified an ACR push and a working Azure containe
 | Login server | `expensesidgafacr-bzgscdb7heazaxc8.azurecr.io` |
 | Image | `expenses-web:v1` |
 | Container web app | `expensestracker-container-idgaf` |
+| Container app resource group | `expensestracker-container-idgaf_group` |
+| Registry resource group | `expenses-lab` |
 | Main container port | `8080` |
 | Image-pull identity | User-assigned `expenses-container-pull`, with AcrPull on the registry |
 | Runtime identity | The container web app's system-assigned identity |
@@ -94,13 +96,16 @@ Configure these permissions yourself for **expenses-github-deploy**:
 
 Keep the runtime pull identity at **AcrPull**; it does not need push access. Keep GitHub's existing web/Function role assignments.
 
-Add three variables to the existing GitHub environment **azure**:
+Add four variables to the existing GitHub environment **azure**:
 
 | Variable | Value |
 |---|---|
 | `AZURE_ACR_NAME` | `expensesidgafacr` |
 | `AZURE_RESOURCE_GROUP` | `expenses-lab` |
+| `AZURE_CONTAINER_RESOURCE_GROUP` | `expensestracker-container-idgaf_group` |
 | `AZURE_CONTAINER_WEB_APP_NAME` | `expensestracker-container-idgaf` |
+
+The registry and container web app are in different resource groups. Keep `AZURE_RESOURCE_GROUP` pointing at the registry group and `AZURE_CONTAINER_RESOURCE_GROUP` pointing at the app group. The workflow validates the app and its `main` container before building an image, so wrong targets or missing read permissions fail earlier with lookup details.
 
 Commit and push the Docker/workflow updates yourself after review, wait for CI, then manually run the new workflow from `main`. The workflow still needs its first GitHub/Azure verification run. A configured image tag or successful restart is not proof of application readiness: verify health, sign-in, group access, an intended expense change and notification delivery afterward.
 
